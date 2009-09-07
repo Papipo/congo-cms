@@ -1,0 +1,1 @@
+Congo::Database.stablish_connection(Rails.configuration.database_configuration[RAILS_ENV])
