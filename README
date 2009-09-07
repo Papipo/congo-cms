@@ -1,4 +1,4 @@
-Congo aims to be a document based content API and CMS.
+Congo (from content + mongo) aims to be a document based content API and CMS. It uses mongoDB as backend.
 It will probably feature pull templates based on Radius template system.
 
 The idea is that some basic/primitive types are implemented at code level, while more complex ones are defined in a collection in the database.
