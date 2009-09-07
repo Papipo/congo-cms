@@ -19,6 +19,7 @@ Rails::Initializer.run do |config|
   
   config.gem "rspec",       :lib => false
   config.gem "rspec-rails", :lib => false
+  config.gem "mocha"      , :lib => false
   
 
   # Only load the plugins named here, in the order given (default is alphabetical).
