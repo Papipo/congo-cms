@@ -38,6 +38,9 @@ ActionController::Routing::Routes.draw do |map|
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing or commenting them out if you're using named routes and resources.
+  map.api_index  'api/:collection.:format',     :controller => 'api', :action => 'index',  :conditions => { :method => :get }
+  map.api_show   'api/:collection/:id.:format', :controller => 'api', :action => 'show',   :conditions => { :method => :get }
+  map.api_update 'api/:collection/:id.:format', :controller => 'api', :action => 'update', :conditions => { :method => :put }
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
 end

@@ -6,11 +6,10 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Major.create(:name => 'Daley', :city => cities.first)
 
-Congo::Database.collection('congo_types').clear
-Congo::Database.collection('congo_types') << {
-  :_id => 'Document',
-  :attributes => {
-    :title => 'string',
-    :text  => 'text'
-  } 
-}
+Product.delete_all
+
+euro = Currency.new(:name => 'Euro', :symbol => '€', :code => 'EUR', :format => '#{amount}€')
+p = Product.create(:name => 'My product',
+                   :description => 'Loren Ipsum',
+                   :tags => ['mongo', 'ruby', 'awesome'],
+                   :price => Price.new(:amount => 15, :currency => euro))
