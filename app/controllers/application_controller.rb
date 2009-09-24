@@ -7,4 +7,19 @@ class ApplicationController < ActionController::Base
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
+  rescue_from MongoMapper::DocumentNotFound, :with => :not_found
+  rescue_from ArgumentError, :with => :bad_request
+  
+  private
+  def not_found
+    respond_to do |format|
+      format.json { head :not_found }
+    end
+  end
+  
+  def bad_request
+    respond_to do |format|
+      format.json { head :bad_request }
+    end
+  end
 end

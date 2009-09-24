@@ -5,6 +5,6 @@ class Price
   key :currency, Currency
   
   def to_s
-    eval(currency.format)
+    currency.format % amount
   end
 end

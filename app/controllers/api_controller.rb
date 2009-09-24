@@ -21,6 +21,13 @@ class ApiController < ApplicationController
     end
   end
   
+  def destroy
+    type.destroy(params[:id])
+    respond_to do |format|
+      format.json { head :ok }
+    end
+  end
+  
   private
   def type
     @type ||= params[:collection].classify.constantize
