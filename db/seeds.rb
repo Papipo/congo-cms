@@ -6,21 +6,45 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Major.create(:name => 'Daley', :city => cities.first)
 
-Product.delete_all
+DynamicType.delete_all
 
-euro = Currency.new(:name => 'Euro', :symbol => '€', :code => 'EUR', :format => '#{amount}€')
+DynamicType.create(:_id  => 'Currency', :embedded => true,
+                 :keys => [
+                   {:name => 'name'},
+                   {:name => 'code'},
+                   {:name => 'symbol'}
+                 ])
 
-Product.create(:name => 'Mighty mouse',
-               :description => 'Crappy mouse from Apple',
-               :tags => ['apple', 'mouse', 'bad'],
-               :price => Price.new(:amount => 49, :currency => euro))
+DynamicType.create(:id  => 'Price', :embedded => true,
+                 :keys => [
+                   {:name => 'amount',   :type => 'Float' },
+                   {:name => 'currency', :type => 'Currency' }
+                 ])
 
-Product.create(:name => 'iMac',
-               :description => 'Nice intel computer from Apple',
-               :tags => ['apple', 'intel', 'good'],
-               :price => Price.new(:amount => 899, :currency => euro))
+DynamicType.create(:id => 'Product', :embedded => false,
+                 :keys => [
+                   {:name => 'name'},
+                   {:name => 'description'},
+                   {:name => 'tags', :type => Array},
+                   {:name => 'price', :type => 'Price'}
+                 ])
 
-Product.create(:name => 'iPod touch',
-               :description => 'Nice mp3 and video player with lots of applications',
-               :tags => ['apple', 'mp3', 'video', 'big'],
-               :price => Price.new(:amount => 199, :currency => euro))
+
+Congo::Types::Product.delete_all
+
+euro = Congo::Types::Currency.new(:name => 'Euro', :symbol => '€', :code => 'EUR', :format => '#{amount}€')
+
+Congo::Types::Product.create(:name => 'Mighty mouse',
+                             :description => 'Crappy mouse from Apple',
+                             :tags => ['apple', 'mouse', 'bad'],
+                             :price => Congo::Types::Price.new(:amount => 49, :currency => euro))
+
+Congo::Types::Product.create(:name => 'iMac',
+                             :description => 'Nice intel computer from Apple',
+                             :tags => ['apple', 'intel', 'good'],
+                             :price => Congo::Types::Price.new(:amount => 899, :currency => euro))
+
+Congo::Types::Product.create(:name => 'iPod touch',
+                             :description => 'Nice mp3 and video player with lots of applications',
+                             :tags => ['apple', 'mp3', 'video', 'big'],
+                             :price => Congo::Types::Price.new(:amount => 199, :currency => euro))

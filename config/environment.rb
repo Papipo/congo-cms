@@ -16,7 +16,7 @@ Rails::Initializer.run do |config|
 
   config.gem "mongodb-mongo",     :lib => 'mongo', :source => 'http://gems.github.com'
   config.gem "mongodb-mongo_ext", :lib => false,   :source => 'http://gems.github.com'
-  config.gem "mongomapper", :source => 'http://gems.github-com'
+  config.gem "hashrocket-mongomapper", :lib => 'mongomapper', :source => 'http://gems.github.com'
   
   config.gem "rspec",       :lib => false
   config.gem "rspec-rails", :lib => false
