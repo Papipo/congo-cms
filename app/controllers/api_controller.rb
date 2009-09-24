@@ -1,9 +1,14 @@
 class ApiController < ApplicationController
   
   def index
-    @result = type.find(:all)
+    @result = type.paginate(:page => params[:page], :per_page => params[:per_page] || 10)
     respond_to do |format|
-      format.json { render :json => @result }
+      format.json {
+        headers['Total-pages']   = @result.total_pages
+        headers['Total-entries'] = @result.total_entries
+        headers['Per-page']      = @result.per_page
+        render :json => @result
+      }
     end
   end
   
