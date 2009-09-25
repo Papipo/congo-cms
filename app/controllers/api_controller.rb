@@ -21,7 +21,9 @@ class ApiController < ApplicationController
   end
   
   def update
-    @result = type.update(params[:id], attributes_for_document)
+    @result = type.find(params[:id])
+    @result.attributes = attributes_for_document
+    @result.save! # I would prefer to use the one-liner @type.update!(params[:id], attributes_for_document) instead
     respond_to do |format|
       format.json { render :json => @result, :location => api_show_path(collection, @result, :format => 'json') } # Any shortcut for the location thingy?
     end

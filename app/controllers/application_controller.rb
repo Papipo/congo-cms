@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   # filter_parameter_logging :password
   rescue_from MongoMapper::DocumentNotFound, :with => :not_found
   rescue_from ArgumentError, :with => :bad_request
+  rescue_from MongoMapper::DocumentNotValid, :with => :document_not_valid
   
   private
   def not_found
@@ -20,6 +21,12 @@ class ApplicationController < ActionController::Base
   def bad_request
     respond_to do |format|
       format.json { head :bad_request }
+    end
+  end
+  
+  def document_not_valid(exception)
+    respond_to do |format|
+      format.json { render :json => {:error => exception.message }, :status => :bad_request }
     end
   end
 end
