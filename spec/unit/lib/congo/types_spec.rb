@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), '..', '..', 'unit_spec_helper')
 describe Congo::Types do
   MongoMapper::Key::NativeTypes.each do |native_type|
     it "should have a #{native_type} constant" do
-      "Congo::Types::#{native_type}".constantize.superclass.should be(native_type)
+      "Congo::Types::#{native_type}".constantize.should be(native_type)
     end
   end
   
