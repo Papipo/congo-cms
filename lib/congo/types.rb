@@ -14,12 +14,9 @@ module Congo
     def self.from_metadata(metadata)
       klass = Class.new
       klass.class_eval { include metadata.embedded? ? MongoMapper::EmbeddedDocument : MongoMapper::Document }
-      klass.class_eval(evaluable_keys(metadata.keys))
+      klass.class_eval(metadata.evaluable_keys)
+      klass.class_eval(metadata.evaluable_validations)
       klass
-    end
-    
-    def self.evaluable_keys(keys)
-      keys.map { |key| "key :#{key.name}, Congo::Types::#{key.type.to_s}" }.join("\n")
     end
   end
 end
