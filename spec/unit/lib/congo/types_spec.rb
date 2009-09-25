@@ -1,22 +1,16 @@
 require File.join(File.dirname(__FILE__), '..', '..', 'unit_spec_helper')
 
 describe Congo::Types do
-  it "should have a String constant" do
-    Congo::Types::String.superclass.should be(String)
-  end
-  
-  it "should have an Integer constant" do
-    Congo::Types::Integer.superclass.should be(Integer)
-  end
-  
-  it "should have a Float constant" do
-    Congo::Types::Float.superclass.should be(Float)
+  MongoMapper::Key::NativeTypes.each do |native_type|
+    it "should have a #{native_type} constant" do
+      "Congo::Types::#{native_type}".constantize.superclass.should be(native_type)
+    end
   end
   
   describe "when a missing constant is accessed" do
     describe "and it does not exist in the database" do
       before do
-        Congo::Database.stubs(:load_type).with('MyType').returns(nil)
+        DynamicType.stubs(:find).with('MyType').returns(nil)
       end
       
       it "should raise a NameError" do
@@ -26,7 +20,7 @@ describe Congo::Types do
     
     describe "and it exists in the database" do
       before do
-        Congo::Database.stubs(:load_type).with('MyType').returns(type_metadata = stub('Type metadata'))
+        DynamicType.stubs(:find).with('MyType').returns(type_metadata = stub('Type metadata'))
         Congo::Types.stubs(:from_metadata).with(type_metadata).returns(@new_class = stub('New class'))
       end
 

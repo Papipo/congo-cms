@@ -1,6 +1,6 @@
 module Congo
   class Types
-    MongoMapper::Key::NativeTypes.each { |native_type| const_set(native_type.to_s, native_type) }
+    MongoMapper::Key::NativeTypes.each { |native_type| const_set(native_type.to_s, Class.new(native_type)) }
     
     private
     def self.const_missing(name)
