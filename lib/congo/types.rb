@@ -15,6 +15,7 @@ module Congo
       klass = Class.new
       klass.class_eval { include metadata.embedded? ? MongoMapper::EmbeddedDocument : MongoMapper::Document }
       klass.class_eval(metadata.evaluable_keys)
+      klass.class_eval(metadata.evaluable_associations)
       klass.class_eval(metadata.evaluable_validations)
       klass
     end

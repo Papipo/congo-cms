@@ -4,6 +4,7 @@ class DynamicType
   key  :embedded, Boolean, :default => false
   many :keys
   many :validations
+  many :associations
     
   def method_missing(method)
     if method.to_s =~ /^evaluable_([a-z]+)$/ && respond_to?($1)

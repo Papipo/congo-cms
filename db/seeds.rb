@@ -29,7 +29,7 @@ DynamicType.create(:id => 'Product', :embedded => false,
                    :keys => [
                      {:name => 'name'},
                      {:name => 'description'},
-                     {:name => 'tags', :type => Array},
+                     {:name => 'tags', :type => 'Array'},
                      {:name => 'price', :type => 'Price'}
                    ],
                    :validations => [
@@ -65,3 +65,28 @@ DynamicType.create(:id => 'BlogPost', :embedded => false, :timestamps => true,
 Congo::Types::BlogPost.create(:title => 'My very first congo blog post',
                               :body  => 'Welcome to the awesome world of dynamic typed content management frameworks...',
                               :tags  => %w{congo cms welcome})
+
+DynamicType.create(:id => 'Address', :embedded => true,
+                   :keys => [
+                     {:name => 'street'},
+                     {:name => 'city'},
+                     {:name => 'zipcode'}
+                   ])
+                   
+DynamicType.create(:id => 'Customer', :embedded => false,
+                   :keys => [
+                     {:name => 'firstname'},
+                     {:name => 'lastname'},
+                     {:name => 'age', :type => 'Integer'}
+                   ],
+                   :associations => [
+                     {:name => :addresses}
+                   ])
+
+Congo::Types::Customer.create(:firstname => 'John',
+                              :lastname  => 'Doe',
+                              :age       => 45,
+                              :addresses => [
+                                {:street => 'My home', :city => 'My city', :zipcode => 'My zipcode'},
+                                {:street => 'Another home', :city => 'Another city', :zipcode => 'Another zipcode'}
+                              ])
