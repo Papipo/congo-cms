@@ -4,7 +4,7 @@ module Congo
     
     private
     def self.const_missing(name)
-      if metadata = ::DynamicType.find(name.to_s)
+      if metadata = ::CustomType.find(name.to_s)
         const_set(name, from_metadata(metadata))
       else
         super

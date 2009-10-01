@@ -10,7 +10,7 @@ describe Congo::Types do
   describe "when a missing constant is accessed" do
     describe "and it does not exist in the database" do
       before do
-        DynamicType.stubs(:find).with('MyType').returns(nil)
+        CustomType.stubs(:find).with('MyType').returns(nil)
       end
       
       it "should raise a NameError" do
@@ -20,7 +20,7 @@ describe Congo::Types do
     
     describe "and it exists in the database" do
       before do
-        DynamicType.stubs(:find).with('MyType').returns(type_metadata = stub('Type metadata'))
+        CustomType.stubs(:find).with('MyType').returns(type_metadata = stub('Type metadata'))
         Congo::Types.stubs(:from_metadata).with(type_metadata).returns(@new_class = stub('New class'))
       end
 

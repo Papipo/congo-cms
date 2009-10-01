@@ -3,7 +3,7 @@ db.collection_names.each do |collection|
   db.collection(collection).clear
 end
 
-DynamicType.create(:id => 'Currency', :embedded => true,
+CustomType.create(:id => 'Currency', :embedded => true,
                    :keys => [
                      {:name => 'name'},
                      {:name => 'code'},
@@ -15,7 +15,7 @@ DynamicType.create(:id => 'Currency', :embedded => true,
                      {:type => 'presence_of', :key => 'symbol'}
                    ])
 
-DynamicType.create(:id  => 'Price', :embedded => true,
+CustomType.create(:id  => 'Price', :embedded => true,
                    :keys => [
                      {:name => 'amount',   :type => 'Float' },
                      {:name => 'currency', :type => 'Currency'}
@@ -25,7 +25,7 @@ DynamicType.create(:id  => 'Price', :embedded => true,
                       {:type => 'presence_of', :key => 'currency'}
                     ])
 
-DynamicType.create(:id => 'Product', :embedded => false,
+CustomType.create(:id => 'Product', :embedded => false,
                    :keys => [
                      {:name => 'name'},
                      {:name => 'description'},
@@ -55,7 +55,7 @@ Congo::Types::Product.create(:name => 'iPod touch',
                              :tags => ['apple', 'mp3', 'video', 'big'],
                              :price => {:amount => 199, :currency => euro})
                              
-DynamicType.create(:id => 'BlogPost', :embedded => false, :timestamps => true,
+CustomType.create(:id => 'BlogPost', :embedded => false, :timestamps => true,
                    :keys => [
                     {:name => 'title'},
                     {:name => 'body'},
@@ -66,14 +66,14 @@ Congo::Types::BlogPost.create(:title => 'My very first congo blog post',
                               :body  => 'Welcome to the awesome world of dynamic typed content management frameworks...',
                               :tags  => %w{congo cms welcome})
 
-DynamicType.create(:id => 'Address', :embedded => true,
+CustomType.create(:id => 'Address', :embedded => true,
                    :keys => [
                      {:name => 'street'},
                      {:name => 'city'},
                      {:name => 'zipcode'}
                    ])
                    
-DynamicType.create(:id => 'Customer', :embedded => false,
+CustomType.create(:id => 'Customer', :embedded => false,
                    :keys => [
                      {:name => 'firstname'},
                      {:name => 'lastname'},

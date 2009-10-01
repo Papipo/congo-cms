@@ -1,4 +1,4 @@
-class DynamicType
+class CustomType
   include MongoMapper::Document
   
   key  :embedded, Boolean, :default => false
