@@ -14,9 +14,9 @@ Rails::Initializer.run do |config|
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
-  config.gem "mongodb-mongo",     :lib => 'mongo', :source => 'http://gems.github.com'
-  config.gem "mongodb-mongo_ext", :lib => false,   :source => 'http://gems.github.com'
-  config.gem "hashrocket-mongomapper", :lib => 'mongomapper', :source => 'http://gems.github.com'  
+  config.gem "mongodb-mongo",     :source => 'http://gems.github.com', :lib => 'mongo'
+  config.gem "mongodb-mongo_ext", :source => 'http://gems.github.com', :lib => false
+  config.gem "mongomapper",       :source => 'http://gems.github.com', :lib => 'mongomapper'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
