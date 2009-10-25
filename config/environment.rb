@@ -16,7 +16,7 @@ Rails::Initializer.run do |config|
 
   config.gem "mongodb-mongo",     :source => 'http://gems.github.com', :lib => 'mongo'
   config.gem "mongodb-mongo_ext", :source => 'http://gems.github.com', :lib => false
-  config.gem "mongomapper",       :source => 'http://gems.github.com', :lib => 'mongomapper'
+  config.gem "mongo_mapper",       :source => 'http://gemcutter.org'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
