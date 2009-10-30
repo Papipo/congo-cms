@@ -1,18 +1,8 @@
 Congo (from content + mongo) aims to be a document based content API and CMS. It uses mongoDB as backend.
 It will probably feature pull templates based on Radius template system.
 
-The idea is that some basic/primitive types are implemented at code level, while more complex ones are defined in a collection in the database.
-Being a basic type means that it inherits from a Ruby type (String, Integer, etc), and as such, it can be just printed.
-Any other kind of type is a CustomType, and its metada is stored in the db. Nothing can stop you from implementing a complex type in ruby code and put it in the Congo::Types namespace, so it's used transparently.
-
-A CustomType can be an email (string + validation), or something more complex, like an Order or a product with price, tax, etc. Thanks to MongoMapper, types can just be used as keys of other types.
-
-The Congo::Types module gathers all Congo types in its namespace (hence its name :P). If a missing class is accessed, the module will try to lookup on the database for a metadata description of it, in order to create a new constant in the namespace for it.
-
-Another interesting idea is that even while it is using a document based database, it is constraining the "schema", since all will be based on the Composite types mentioned above. That means that it can have validations, and lots of things, but it still has some advantages over some relational database based solutions:
+Interesting bits:
 
   - The documents or contents will be formatted as if they were created by a ad-hoc application, and not spread all over several tables (like in ez publish, expressionengine, drupal...)
   - You don't need to run ALTER TABLE or any kind of migrations whatsoever. That's an expensive operation for production databases
-  - You can create similar types based on scopes, like an account or user. Imagine that one of your customers wants an extra field in that form :-)
-
-Another consequence is that we are investing in INSERT and UPDATE time in order to READ faster (or at least that is my intention)
+  - You can create similar types based on scopes, like an account, website or user.
