@@ -7,7 +7,8 @@ class Association
   validates_presence_of  :name, :type
   validates_inclusion_of :type, :within => ['many']
   
-  def to_code
-    "#{type} :#{name}, :class_name => 'Congo::Types::#{name.classify}'"
+  def apply(klass, scope)
+    klass.send(type, name)
+    klass.associations[name].instance_variable_set("@klass", scope.custom_type_as_const(name.classify)) # ugly hack until jnunemaker merges my changes
   end
 end

@@ -3,7 +3,9 @@ db.collection_names.each do |collection|
   db.collection(collection).clear
 end
 
-CustomType.create(:id => 'Currency', :embedded => true,
+website = Website.create(:name => 'My website', :domains => [{:name => 'mywebsite.dev'}])
+
+website.custom_types.create(:name => 'Currency', :embedded => true,
                    :keys => [
                      {:name => 'name'},
                      {:name => 'code'},
@@ -15,7 +17,7 @@ CustomType.create(:id => 'Currency', :embedded => true,
                      {:type => 'presence_of', :key => 'symbol'}
                    ])
 
-CustomType.create(:id  => 'Price', :embedded => true,
+website.custom_types.create(:name => 'Price', :embedded => true,
                    :keys => [
                      {:name => 'amount',   :type => 'Float' },
                      {:name => 'currency', :type => 'Currency'}
@@ -25,11 +27,11 @@ CustomType.create(:id  => 'Price', :embedded => true,
                       {:type => 'presence_of', :key => 'currency'}
                     ])
 
-CustomType.create(:id => 'Product', :embedded => false,
+website.custom_types.create(:name => 'Product', :embedded => false,
                    :keys => [
                      {:name => 'name'},
                      {:name => 'description'},
-                     {:name => 'tags', :type => 'Array'},
+                     {:name => 'tags', :type =>  'Array'},
                      {:name => 'price', :type => 'Price'}
                    ],
                    :validations => [
@@ -40,40 +42,29 @@ CustomType.create(:id => 'Product', :embedded => false,
 
 euro = {:name => 'Euro', :symbol => '€', :code => 'EUR', :format => '#{amount}€'}
 
-Congo::Types::Product.create(:name => 'Mighty mouse',
+website.products.create(:name => 'Mighty mouse',
                              :description => 'Crappy mouse from Apple',
                              :tags => ['apple', 'mouse', 'bad'],
                              :price => {:amount => 49, :currency => euro})
 
-Congo::Types::Product.create(:name => 'iMac',
+website.products.create(:name => 'iMac',
                              :description => 'Nice intel computer from Apple',
                              :tags => ['apple', 'intel', 'good'],
                              :price => {:amount => 899, :currency => euro})
 
-Congo::Types::Product.create(:name => 'iPod touch',
+website.products.create(:name => 'iPod touch',
                              :description => 'Nice mp3 and video player with lots of applications',
                              :tags => ['apple', 'mp3', 'video', 'big'],
                              :price => {:amount => 199, :currency => euro})
-                             
-CustomType.create(:id => 'BlogPost', :embedded => false, :timestamps => true,
-                   :keys => [
-                    {:name => 'title'},
-                    {:name => 'body'},
-                    {:name => 'tags', :type => 'Array'}
-                   ])
-                   
-Congo::Types::BlogPost.create(:title => 'My very first congo blog post',
-                              :body  => 'Welcome to the awesome world of dynamic typed content management frameworks...',
-                              :tags  => %w{congo cms welcome})
 
-CustomType.create(:id => 'Address', :embedded => true,
+website.custom_types.create(:name => 'Address', :embedded => true,
                    :keys => [
                      {:name => 'street'},
                      {:name => 'city'},
                      {:name => 'zipcode'}
                    ])
                    
-CustomType.create(:id => 'Customer', :embedded => false,
+website.custom_types.create(:name => 'Customer', :embedded => false,
                    :keys => [
                      {:name => 'firstname'},
                      {:name => 'lastname'},
@@ -83,10 +74,33 @@ CustomType.create(:id => 'Customer', :embedded => false,
                      {:name => :addresses}
                    ])
 
-Congo::Types::Customer.create(:firstname => 'John',
+website.customers.create(:firstname => 'John',
                               :lastname  => 'Doe',
                               :age       => 45,
                               :addresses => [
                                 {:street => 'My home', :city => 'My city', :zipcode => 'My zipcode'},
                                 {:street => 'Another home', :city => 'Another city', :zipcode => 'Another zipcode'}
                               ])
+
+website.custom_types.create(:name => 'BlogPost', :embedded => false, :timestamps => true,
+                   :keys => [
+                    {:name => 'title'},
+                    {:name => 'body'},
+                    {:name => 'tags', :type => 'Array'}
+                   ])
+
+website.blog_posts.create(:title => 'My very first congo blog post',
+                              :body  => 'Welcome to the awesome world of dynamic typed content management frameworks...',
+                              :tags  => %w{congo cms welcome})
+
+another_website = Website.create(:name => 'Another website', :domains => [{:name => 'anothersite.dev'}])
+another_website.custom_types.create(:name => 'BlogPost', :embedded => false, :timestamps => true,
+                   :keys => [
+                    {:name => 'title'},
+                    {:name => 'body'},
+                    {:name => 'tags', :type => 'Array'}
+                   ])
+
+another_website.blog_posts.create(:title => 'Another fancy blog post',
+                              :body  => 'This stuff is taking shape...',
+                              :tags  => %w{second website})

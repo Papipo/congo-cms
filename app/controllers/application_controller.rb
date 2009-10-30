@@ -15,6 +15,7 @@ class ApplicationController < ActionController::Base
   def not_found
     respond_to do |format|
       format.json { head :not_found }
+      format.html { render :file => 'public/404.html' }
     end
   end
   
@@ -28,5 +29,9 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       format.json { render :json => {:error => exception.message }, :status => :bad_request }
     end
+  end
+  
+  def current_website
+    @website ||= Website.find(:first, 'domains.name' => request.domain)
   end
 end

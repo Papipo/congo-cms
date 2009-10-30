@@ -3,13 +3,13 @@ class ApiController < ApplicationController
   def index
     @result = type.paginate(:page => params[:page], :per_page => params[:per_page] || 10)
     respond_to do |format|
-      format.json {
+      format.json do
         #headers don't affect eTag, so maybe this approach is bad
-        headers['Total-pages']   = @result.total_pages
-        headers['Total-entries'] = @result.total_entries
-        headers['Per-page']      = @result.per_page
+        headers['Total-pages']   = @result.total_pages.to_s
+        headers['Total-entries'] = @result.total_entries.to_s
+        headers['Per-page']      = @result.per_page.to_s
         render :json => @result
-      }
+      end
     end
   end
   
@@ -38,7 +38,7 @@ class ApiController < ApplicationController
   
   private
   def type
-    @type ||= "Congo::Types::#{params[:collection].classify}".constantize
+    @type ||= current_website.custom_type_as_const(params[:collection].classify)
   end
   
   def collection

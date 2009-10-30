@@ -6,7 +6,7 @@ class Key
   
   validates_presence_of :name, :type
   
-  def to_code
-    "key :#{name}, Congo::Types::#{type.to_s}"
+  def apply(klass, scope)
+    klass.key name.to_sym, scope.custom_type_as_const(type)
   end
 end
