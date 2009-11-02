@@ -17,20 +17,22 @@ class CustomType
       klass.class_eval { include MongoMapper::EmbeddedDocument }
     else
       klass.class_eval { include MongoMapper::Document }
-      klass.set_collection_name "#{scope_type}_#{scope_id}_#{name.tableize}"
+      set_collection_name(klass)
+      apply_scope(klass)
     end
-    add_scope(klass)
     apply_metadata(klass)
     klass
   end
   
   private
-  def add_scope(klass) # this should be dynamic, based on scope
-    klass.class_eval {
-      key :website_id, String
-      belongs_to :website
-      validates_presence_of :website
-    }
+  def set_collection_name(klass)
+    klass.set_collection_name "#{scope_type}_#{scope_id}_#{name.tableize}" # maybe just name.tableize is enough
+  end
+  
+  def apply_scope(klass)
+    klass.key scope_type.foreign_key, String
+    klass.belongs_to scope_type.downcase
+    klass.validates_presence_of scope_type.downcase
   end
   
   def apply_metadata(klass)
