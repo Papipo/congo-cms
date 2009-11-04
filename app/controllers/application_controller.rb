@@ -32,6 +32,6 @@ class ApplicationController < ActionController::Base
   end
   
   def current_website
-    @website ||= Website.find(:first, 'domains.name' => request.domain)
+    @current_website ||= Website.find(:first, 'domains.name' => request.domain)
   end
 end

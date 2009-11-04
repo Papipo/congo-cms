@@ -42,6 +42,8 @@ ActionController::Routing::Routes.draw do |map|
   map.api_show    'api/:collection/:id.:format', :controller => 'api', :action => 'show',    :conditions => { :method => :get }
   map.api_update  'api/:collection/:id.:format', :controller => 'api', :action => 'update',  :conditions => { :method => :put }
   map.api_destroy 'api/:collection/:id.:format', :controller => 'api', :action => 'destroy', :conditions => { :method => :delete }
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
+
+  map.root :controller => 'pages', :action => 'homepage'
+  
+  map.connect ':section_path/:template_name', :controller => 'pages', :action => 'show', :template_name => 'index'
 end
