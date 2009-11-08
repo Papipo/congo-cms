@@ -38,7 +38,7 @@ class ApiController < ApplicationController
   
   private
   def type
-    @type ||= current_website.custom_type_as_const(params[:collection].classify)
+    @type ||= current_website.content_type_as_const(params[:collection].classify)
   end
   
   def collection

@@ -6,7 +6,7 @@ end
 
 website = Website.create!(:name => 'My website', :domains => [{:name => 'mywebsite.dev'}])
 
-website.custom_types.create!(:name => 'Currency', :embedded => true,
+website.content_types.create!(:name => 'Currency', :embedded => true,
                    :keys => [
                      {:name => 'name'},
                      {:name => 'code'},
@@ -18,7 +18,7 @@ website.custom_types.create!(:name => 'Currency', :embedded => true,
                      {:type => 'presence_of', :key => 'symbol'}
                    ])
 
-website.custom_types.create!(:name => 'Price', :embedded => true,
+website.content_types.create!(:name => 'Price', :embedded => true,
                    :keys => [
                      {:name => 'amount',   :type => 'Float' },
                      {:name => 'currency', :type => 'Currency'}
@@ -28,7 +28,7 @@ website.custom_types.create!(:name => 'Price', :embedded => true,
                       {:type => 'presence_of', :key => 'currency'}
                     ])
 
-website.custom_types.create!(:name => 'Product', :embedded => false,
+website.content_types.create!(:name => 'Product', :embedded => false,
                    :keys => [
                      {:name => 'name'},
                      {:name => 'description'},
@@ -58,14 +58,14 @@ website.products.create!(:name => 'iPod touch',
                              :tags => ['apple', 'mp3', 'video', 'big'],
                              :price => {:amount => 199, :currency => euro})
 
-website.custom_types.create!(:name => 'Address', :embedded => true,
+website.content_types.create!(:name => 'Address', :embedded => true,
                    :keys => [
                      {:name => 'street'},
                      {:name => 'city'},
                      {:name => 'zipcode'}
                    ])
                    
-website.custom_types.create!(:name => 'Customer', :embedded => false,
+website.content_types.create!(:name => 'Customer', :embedded => false,
                    :keys => [
                      {:name => 'firstname'},
                      {:name => 'lastname'},
@@ -83,7 +83,7 @@ website.customers.create!(:firstname => 'John',
                                 {:street => 'Another home', :city => 'Another city', :zipcode => 'Another zipcode'}
                               ])
 
-website.custom_types.create!(:name => 'BlogPost', :embedded => false, :timestamps => true,
+website.content_types.create!(:name => 'BlogPost', :embedded => false, :timestamps => true,
                    :keys => [
                     {:name => 'title'},
                     {:name => 'body'},
@@ -95,23 +95,39 @@ website.blog_posts.create!(:title => 'My very first congo blog post',
                               :tags  => %w{congo cms welcome})
 
 another_website = Website.create!(:name => 'Another website', :domains => [{:name => 'anothersite.dev'}])
-blog_post_type = another_website.custom_types.create!(:name => 'BlogPost', :embedded => false, :timestamps => true,
+another_website.content_types.create!(:name => 'User', :keys => [{:name => 'name'}])
+blog_post_type = another_website.content_types.create!(:name => 'BlogPost', :embedded => false, :timestamps => true,
                    :keys => [
                     {:name => 'title'},
                     {:name => 'body'},
                     {:name => 'tags', :type => 'Array'}
-                   ])
+                   ],
+                   :associations => [{:name => 'comments'}])
 
-blog_section = another_website.sections.create!(:path => 'blog', :custom_type => blog_post_type)
+another_website.content_types.create!(:name => 'Comment', :embedded => true,
+                                      :keys => [{:name => 'body'}],
+                                      :associations => [{:name => :user, :type => :belongs_to}])
+
+blog_section = another_website.sections.create!(:path => 'blog', :content_type => blog_post_type)
 template_content = <<-RADIUS
-<r:all>
+<r:current_type:all>
   <h1><r:title /></h1>
   <div><r:body /></div>
-</r:all>
+  <div>
+    <ul>
+      <r:comments:first>
+        <li><r:body /> (by <r:user:name />)
+      </r:comments:first>
+    </ul>
+  </div>
+</r:current_type:all>
 RADIUS
 blog_section.templates.create!(:content => template_content, :name => 'index')
 
 
-another_website.blog_posts.create!(:title => 'Another fancy blog post',
+post = another_website.blog_posts.create!(:title => 'Another fancy blog post',
                               :body  => 'This stuff is taking shape...',
-                              :tags  => %w{second website})
+                              :tags  => %w{second website},
+                              :comments => [
+                                {:body => 'This is a comment', :user => another_website.users.create(:name => 'John Doe')}
+                              ])

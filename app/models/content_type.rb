@@ -1,4 +1,4 @@
-class CustomType
+class ContentType
   include MongoMapper::Document
   
   key  :embedded, Boolean, :default => false

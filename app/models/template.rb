@@ -1,4 +1,4 @@
-class Template < Radius::Context
+class Template
   include MongoMapper::Document
   
   key :content, String
@@ -11,8 +11,8 @@ class Template < Radius::Context
   end
   
   private
-  def custom_type
-    @custom_type ||= section.custom_type_as_const
+  def content_type
+    @content_type ||= section.content_type_as_const
   end
   
   def parser
@@ -20,19 +20,6 @@ class Template < Radius::Context
   end
 
   def context
-    @context ||= Radius::Context.new do |c|
-      c.define_tag :all do |tag|
-        custom_type.all.map { |record|
-          tag.locals.record = record
-          tag.expand
-        }.join
-      end
-      
-      custom_type.keys.keys.each do |key|
-        c.define_tag key do |tag|
-          tag.locals.record.send(key)
-        end
-      end
-    end
+    @context ||= Congo::ContentTypeContext.new(content_type)
   end
 end

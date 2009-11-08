@@ -7,6 +7,6 @@ class Key
   validates_presence_of :name, :type
   
   def apply(klass, scope)
-    klass.key name.to_sym, scope.custom_type_as_const(type)
+    klass.key name.to_sym, scope.content_type_as_const(type)
   end
 end

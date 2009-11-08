@@ -1,4 +1,4 @@
-class PagesController < ApplicationController
+class SiteController < ApplicationController
   def show
     render :text => current_template.render
   end
