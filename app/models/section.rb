@@ -2,7 +2,7 @@ class Section
   include MongoMapper::Document
   
   key :path, String
-  many :templates
+  many :actions
   
   belongs_to :website
   key :website_id, String

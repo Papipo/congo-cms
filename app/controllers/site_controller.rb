@@ -1,11 +1,11 @@
 class SiteController < ApplicationController
   def show
-    render :text => current_template.render
+    render :text => action.render
   end
   
   private
-  def current_template
-    current_section.templates.find(:first, :name => params[:template_name])
+  def action
+    current_section.actions.find(:first, :name => params[:action_name])
   end
   
   def current_section

@@ -1,9 +1,9 @@
-require 'pp'
-
 module Congo
-  class ContentTypeContext < Radius::Context
-    def initialize(content_type)
-      super()
+  class ContentTypeContext < WebsiteContext
+    def initialize(content_type, website)
+      super(website)
+      
+      globals.collection = content_type
       
       define_tag(:current_type) do |tag|
         tag.locals.collection = content_type
@@ -35,11 +35,11 @@ module Congo
     end
     
     def is_association?(name)
-      current_binding.locals.record.class.associations.include?(name)
+      current_binding.locals.record.class.associations.include?(name) rescue false
     end
     
     def is_key?(name)
-      current_binding.locals.record.class.keys.include?(name)
+      current_binding.locals.record.class.keys.include?(name) rescue false
     end
     
     def key(name)

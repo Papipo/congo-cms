@@ -45,5 +45,5 @@ ActionController::Routing::Routes.draw do |map|
 
   map.root :controller => 'pages', :action => 'homepage'
   
-  map.connect ':section_path/:template_name', :controller => 'site', :action => 'show', :template_name => 'index'
+  map.connect ':section_path/:action_name', :controller => 'site', :action => 'show', :action_name => 'index'
 end

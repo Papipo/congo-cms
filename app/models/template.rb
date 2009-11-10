@@ -3,23 +3,25 @@ class Template
   
   key :content, String
   
-  belongs_to :section
-  key :section_id
+  belongs_to :website
+  key :website_id
   
   def render
+    context.content = nil
+    parser.parse(content)
+  end
+  
+  def render_with_content(inner_content)
+    context.content = inner_content
     parser.parse(content)
   end
   
   private
-  def content_type
-    @content_type ||= section.content_type_as_const
-  end
-  
   def parser
     @parser ||= Radius::Parser.new(context, :tag_prefix => 'r')
   end
-
+  
   def context
-    @context ||= Congo::ContentTypeContext.new(content_type)
+    @context ||= Congo::WebsiteContext.new(website)
   end
 end

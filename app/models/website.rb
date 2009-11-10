@@ -5,4 +5,5 @@ class Website
   key :name, String
   many :domains
   many :sections
+  many :templates
 end

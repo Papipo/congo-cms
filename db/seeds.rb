@@ -108,21 +108,37 @@ another_website.content_types.create!(:name => 'Comment', :embedded => true,
                                       :keys => [{:name => 'body'}],
                                       :associations => [{:name => :user, :type => :belongs_to}])
 
+layout = <<-LAYOUT
+<body>
+  <h1>Header (this comes from a layout)</h1>
+  <div>In the next div content should be inserted</div>
+  <div><r:content /></div>
+</body>
+LAYOUT
+another_website.templates.create!(:name => 'layout', :content => layout)
+simple = <<-TEMPLATE
+<div>This comes from a template (partial, snippet, whatever :P)</div>
+TEMPLATE
+another_website.templates.create!(:name => 'simple', :content => simple)
+
 blog_section = another_website.sections.create!(:path => 'blog', :content_type => blog_post_type)
 template_content = <<-RADIUS
-<r:current_type:all>
-  <h1><r:title /></h1>
-  <div><r:body /></div>
-  <div>
-    <ul>
-      <r:comments:first>
-        <li><r:body /> (by <r:user:name />)
-      </r:comments:first>
-    </ul>
-  </div>
-</r:current_type:all>
+<r:render template="layout">
+  <r:all>
+    <h2><r:title /></h2>
+    <div><r:body /></div>
+    <div>
+      <ul>
+        <r:comments:first>
+          <li><r:body /> (by <r:user:name />)</li>
+        </r:comments:first>
+      </ul>
+    </div>
+  </r:all>
+  <r:render template="simple" />
+</r:render>
 RADIUS
-blog_section.templates.create!(:content => template_content, :name => 'index')
+blog_section.actions.create!(:content => template_content, :name => 'index')
 
 
 post = another_website.blog_posts.create!(:title => 'Another fancy blog post',
